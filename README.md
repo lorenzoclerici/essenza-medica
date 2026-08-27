@@ -29,6 +29,7 @@ L'output è in `dist/` (incluso `index.html` e asset).
 
 ## Note
 
-- Form: validazione client-side pronta; collegare il webhook Relatia CRM / n8n al submit in `Registrazione.jsx`.
+- Form → Google Sheet tab **Open day** (Nome, Cognome, Numero di telefono, E-mail, Data e ora).
+- Setup webhook: vedi `scripts/google-apps-script/Code.gs`, poi imposta `VITE_GOOGLE_SHEETS_WEBHOOK_URL` (locale `.env` + Vercel).
 - Immagini in `public/images/` (copie da `Immagini /`).
 - Talk 18:30 e orario di chiusura ancora da confermare (come da Documentation.md).

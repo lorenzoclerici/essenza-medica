@@ -11,6 +11,7 @@ import {
   ClockIcon,
 } from '@heroicons/react/24/outline'
 import { FadeUp } from './Motion'
+import { submitOpenDayLead } from '../lib/submitToSheet'
 
 const initial = {
   nome: '',
@@ -26,6 +27,7 @@ export default function Registrazione() {
   const [form, setForm] = useState(initial)
   const [touched, setTouched] = useState({})
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
   const phoneOk = form.telefono.replace(/\D/g, '').length >= 8
@@ -44,6 +46,7 @@ export default function Registrazione() {
 
   async function onSubmit(e) {
     e.preventDefault()
+    setError('')
     setTouched({
       nome: true,
       cognome: true,
@@ -53,13 +56,25 @@ export default function Registrazione() {
     })
     if (!canSubmit) return
     setLoading(true)
-    // Placeholder: collegare webhook Relatia CRM / n8n
-    await new Promise((r) => setTimeout(r, 900))
-    const params = new URLSearchParams({
-      nome: form.nome.trim(),
-      telefono: form.telefono.trim(),
-    })
-    window.location.assign(`/grazie?${params.toString()}`)
+    try {
+      await submitOpenDayLead({
+        nome: form.nome,
+        cognome: form.cognome,
+        telefono: form.telefono,
+        email: form.email,
+      })
+      const params = new URLSearchParams({
+        nome: form.nome.trim(),
+        telefono: form.telefono.trim(),
+      })
+      window.location.assign(`/grazie?${params.toString()}`)
+    } catch (err) {
+      console.error(err)
+      setError(
+        'Non è stato possibile salvare la registrazione. Riprova tra poco o contattaci telefonicamente.'
+      )
+      setLoading(false)
+    }
   }
 
   return (
@@ -169,6 +184,12 @@ export default function Registrazione() {
                   Vorrei essere ricontattato per una visita (opzionale)
                 </span>
               </label>
+
+              {error && (
+                <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </p>
+              )}
 
               <motion.button
                 type="submit"
