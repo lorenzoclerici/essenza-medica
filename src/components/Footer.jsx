@@ -6,7 +6,7 @@ export default function Footer() {
           <img
             src="/images/logo.png"
             alt="Essenza Medica"
-            className="h-14 w-auto"
+            className="h-[5.25rem] w-auto"
           />
           <p className="mt-4 text-sm text-white/55">
             Via Ariete 18, 47923 Rimini (RN)

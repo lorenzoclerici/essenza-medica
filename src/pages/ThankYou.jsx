@@ -27,7 +27,7 @@ export default function ThankYou() {
           <img
             src="/images/logo.png"
             alt="Essenza Medica"
-            className="h-12 w-auto sm:h-14"
+            className="h-[4.5rem] w-auto sm:h-[5.25rem]"
           />
         </a>
       </header>

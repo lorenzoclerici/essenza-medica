@@ -14,7 +14,7 @@ function BrandMark({ className = '' }) {
       <img
         src="/images/logo.png"
         alt="Essenza Medica — Medicina e benessere per la persona"
-        className="h-12 w-auto sm:h-14"
+        className="h-[4.5rem] w-auto sm:h-[5.25rem]"
       />
     </a>
   )
