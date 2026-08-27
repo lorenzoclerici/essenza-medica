@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   UserIcon,
   EnvelopeIcon,
@@ -26,7 +26,6 @@ export default function Registrazione() {
   const [form, setForm] = useState(initial)
   const [touched, setTouched] = useState({})
   const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
   const phoneOk = form.telefono.replace(/\D/g, '').length >= 8
@@ -56,8 +55,11 @@ export default function Registrazione() {
     setLoading(true)
     // Placeholder: collegare webhook Relatia CRM / n8n
     await new Promise((r) => setTimeout(r, 900))
-    setLoading(false)
-    setDone(true)
+    const params = new URLSearchParams({
+      nome: form.nome.trim(),
+      email: form.email.trim(),
+    })
+    window.location.assign(`/grazie?${params.toString()}`)
   }
 
   return (
@@ -75,153 +77,125 @@ export default function Registrazione() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-5 lg:gap-8">
           <FadeUp className="lg:col-span-3">
-            <AnimatePresence mode="wait">
-              {done ? (
-                <motion.div
-                  key="success"
-                  initial={reduce ? false : { opacity: 0, scale: 0.94 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex min-h-[420px] flex-col items-center justify-center rounded-2xl border border-brand/30 bg-mist px-8 py-12 text-center"
-                >
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand text-ink">
-                    <CheckIcon className="h-8 w-8" />
+            <form
+              onSubmit={onSubmit}
+              noValidate
+              className="rounded-2xl border border-ink/8 bg-mist p-6 shadow-[0_10px_40px_rgba(30,44,53,0.06)] md:p-8"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field
+                  label="Nome"
+                  icon={UserIcon}
+                  required
+                  value={form.nome}
+                  valid={valid.nome}
+                  touched={touched.nome}
+                  onBlur={() => setTouched((t) => ({ ...t, nome: true }))}
+                  onChange={(v) => update('nome', v)}
+                  autoComplete="given-name"
+                />
+                <Field
+                  label="Cognome"
+                  icon={UserIcon}
+                  required
+                  value={form.cognome}
+                  valid={valid.cognome}
+                  touched={touched.cognome}
+                  onBlur={() => setTouched((t) => ({ ...t, cognome: true }))}
+                  onChange={(v) => update('cognome', v)}
+                  autoComplete="family-name"
+                />
+                <Field
+                  label="Email"
+                  icon={EnvelopeIcon}
+                  required
+                  type="email"
+                  value={form.email}
+                  valid={valid.email}
+                  touched={touched.email}
+                  onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                  onChange={(v) => update('email', v)}
+                  autoComplete="email"
+                  className="sm:col-span-2"
+                />
+                <Field
+                  label="Telefono"
+                  icon={PhoneIcon}
+                  required
+                  type="tel"
+                  value={form.telefono}
+                  valid={valid.telefono}
+                  touched={touched.telefono}
+                  onBlur={() => setTouched((t) => ({ ...t, telefono: true }))}
+                  onChange={(v) => update('telefono', v)}
+                  autoComplete="tel"
+                  className="sm:col-span-2"
+                />
+              </div>
+
+              <label className="mt-5 flex items-start gap-3 text-sm text-ink/80">
+                <input
+                  type="checkbox"
+                  checked={form.privacy}
+                  onChange={(e) => {
+                    update('privacy', e.target.checked)
+                    setTouched((t) => ({ ...t, privacy: true }))
+                  }}
+                  className="mt-1 h-4 w-4 accent-brand"
+                  required
+                />
+                <span>
+                  Accetto il trattamento dei dati personali secondo la{' '}
+                  <a href="#privacy" className="underline underline-offset-2">
+                    Privacy Policy
+                  </a>
+                  .*
+                  {touched.privacy && !valid.privacy && (
+                    <span className="mt-1 block text-xs text-red-600">
+                      Consenso obbligatorio
+                    </span>
+                  )}
+                </span>
+              </label>
+
+              <label className="mt-3 flex items-start gap-3 text-sm text-ink/80">
+                <input
+                  type="checkbox"
+                  checked={form.ricontatto}
+                  onChange={(e) => update('ricontatto', e.target.checked)}
+                  className="mt-1 h-4 w-4 accent-brand"
+                />
+                <span>
+                  Vorrei essere ricontattato per una visita (opzionale)
+                </span>
+              </label>
+
+              <motion.button
+                type="submit"
+                disabled={loading}
+                whileHover={reduce || loading ? undefined : { scale: 1.02 }}
+                whileTap={reduce || loading ? undefined : { scale: 0.97 }}
+                className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wider text-ink disabled:opacity-70"
+              >
+                {loading ? (
+                  <span className="inline-flex items-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink/30 border-t-ink" />
+                    Invio in corso…
                   </span>
-                  <h3 className="mt-6 text-2xl font-extrabold uppercase text-ink">
-                    Sei in lista!
-                  </h3>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
-                    Grazie {form.nome}. Riceverai a breve la conferma
-                    all&apos;indirizzo {form.email} con tutti i dettagli
-                    dell&apos;Open Day.
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  onSubmit={onSubmit}
-                  noValidate
-                  className="rounded-2xl border border-ink/8 bg-mist p-6 shadow-[0_10px_40px_rgba(30,44,53,0.06)] md:p-8"
-                >
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field
-                      label="Nome"
-                      icon={UserIcon}
-                      required
-                      value={form.nome}
-                      valid={valid.nome}
-                      touched={touched.nome}
-                      onBlur={() => setTouched((t) => ({ ...t, nome: true }))}
-                      onChange={(v) => update('nome', v)}
-                      autoComplete="given-name"
-                    />
-                    <Field
-                      label="Cognome"
-                      icon={UserIcon}
-                      required
-                      value={form.cognome}
-                      valid={valid.cognome}
-                      touched={touched.cognome}
-                      onBlur={() =>
-                        setTouched((t) => ({ ...t, cognome: true }))
-                      }
-                      onChange={(v) => update('cognome', v)}
-                      autoComplete="family-name"
-                    />
-                    <Field
-                      label="Email"
-                      icon={EnvelopeIcon}
-                      required
-                      type="email"
-                      value={form.email}
-                      valid={valid.email}
-                      touched={touched.email}
-                      onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-                      onChange={(v) => update('email', v)}
-                      autoComplete="email"
-                      className="sm:col-span-2"
-                    />
-                    <Field
-                      label="Telefono"
-                      icon={PhoneIcon}
-                      required
-                      type="tel"
-                      value={form.telefono}
-                      valid={valid.telefono}
-                      touched={touched.telefono}
-                      onBlur={() =>
-                        setTouched((t) => ({ ...t, telefono: true }))
-                      }
-                      onChange={(v) => update('telefono', v)}
-                      autoComplete="tel"
-                      className="sm:col-span-2"
-                    />
-                  </div>
+                ) : (
+                  'Confermo la mia partecipazione'
+                )}
+              </motion.button>
 
-                  <label className="mt-5 flex items-start gap-3 text-sm text-ink/80">
-                    <input
-                      type="checkbox"
-                      checked={form.privacy}
-                      onChange={(e) => {
-                        update('privacy', e.target.checked)
-                        setTouched((t) => ({ ...t, privacy: true }))
-                      }}
-                      className="mt-1 h-4 w-4 accent-brand"
-                      required
-                    />
-                    <span>
-                      Accetto il trattamento dei dati personali secondo la{' '}
-                      <a href="#privacy" className="underline underline-offset-2">
-                        Privacy Policy
-                      </a>
-                      .*
-                      {touched.privacy && !valid.privacy && (
-                        <span className="mt-1 block text-xs text-red-600">
-                          Consenso obbligatorio
-                        </span>
-                      )}
-                    </span>
-                  </label>
-
-                  <label className="mt-3 flex items-start gap-3 text-sm text-ink/80">
-                    <input
-                      type="checkbox"
-                      checked={form.ricontatto}
-                      onChange={(e) => update('ricontatto', e.target.checked)}
-                      className="mt-1 h-4 w-4 accent-brand"
-                    />
-                    <span>
-                      Vorrei essere ricontattato per una visita (opzionale)
-                    </span>
-                  </label>
-
-                  <motion.button
-                    type="submit"
-                    disabled={loading}
-                    whileHover={reduce || loading ? undefined : { scale: 1.02 }}
-                    whileTap={reduce || loading ? undefined : { scale: 0.97 }}
-                    className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-sm font-bold uppercase tracking-wider text-ink disabled:opacity-70"
-                  >
-                    {loading ? (
-                      <span className="inline-flex items-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink/30 border-t-ink" />
-                        Invio in corso…
-                      </span>
-                    ) : (
-                      'Confermo la mia partecipazione'
-                    )}
-                  </motion.button>
-
-                  <p className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-xs text-ink/55">
-                    <span className="inline-flex items-center gap-1">
-                      <LockClosedIcon className="h-3.5 w-3.5" />
-                      Dati al sicuro, mai condivisi
-                    </span>
-                    <span>Nessun costo, nessun impegno</span>
-                    <span>Solo conferma dell&apos;evento</span>
-                  </p>
-                </motion.form>
-              )}
-            </AnimatePresence>
+              <p className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-xs text-ink/55">
+                <span className="inline-flex items-center gap-1">
+                  <LockClosedIcon className="h-3.5 w-3.5" />
+                  Dati al sicuro, mai condivisi
+                </span>
+                <span>Nessun costo, nessun impegno</span>
+                <span>Solo conferma dell&apos;evento</span>
+              </p>
+            </form>
           </FadeUp>
 
           <FadeUp delay={0.12} className="lg:col-span-2">

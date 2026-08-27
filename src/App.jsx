@@ -6,8 +6,9 @@ import Registrazione from './components/Registrazione'
 import DoveSiamo from './components/DoveSiamo'
 import CtaFinale from './components/CtaFinale'
 import Footer from './components/Footer'
+import ThankYou from './pages/ThankYou'
 
-export default function App() {
+function Home() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white">
       <Hero />
@@ -20,4 +21,12 @@ export default function App() {
       <Footer />
     </div>
   )
+}
+
+export default function App() {
+  const path = window.location.pathname.replace(/\/$/, '') || '/'
+  if (path === '/grazie') {
+    return <ThankYou />
+  }
+  return <Home />
 }
