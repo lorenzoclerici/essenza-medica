@@ -1,4 +1,6 @@
-const SHEETS_WEBHOOK_URL = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL
+const SHEETS_WEBHOOK_URL =
+  import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL ||
+  'https://script.google.com/macros/s/AKfycbxuvHzaWazNfYfcfeJpjQjZLsaSXFAZw5zGhSbVpDQ-HOHYSqTs1ru63i6WZLemK-d7YA/exec'
 
 /**
  * Invia i dati del form al Google Apps Script collegato al foglio "Open day".
