@@ -49,7 +49,7 @@ export default function Hero() {
         className="pointer-events-none absolute bottom-0 right-0 hidden h-[72%] w-auto max-w-[58%] object-contain object-bottom md:block lg:h-[78%] lg:max-w-[52%]"
       />
 
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col px-6 pb-8 pt-8 md:min-h-[100svh] md:pb-16">
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col px-6 pb-0 pt-8 md:min-h-[100svh] md:pb-16">
         <header className="flex items-center justify-between gap-4">
           <BrandMark />
           <a
@@ -138,25 +138,10 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Mobile: team sotto il contenuto, senza overlap */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.55, ease }}
-          className="mt-12 flex justify-center md:hidden"
-        >
-          <img
-            src="/images/hero-team.png"
-            alt=""
-            className="h-auto w-full max-w-md object-contain object-bottom"
-            aria-hidden
-          />
-        </motion.div>
-
         <motion.a
           href="#contesto"
           aria-label="Scorri alla sezione successiva"
-          className="mx-auto mt-4 hidden text-white/50 md:mt-0 md:absolute md:bottom-6 md:left-1/2 md:block md:-translate-x-1/2"
+          className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 text-white/50 md:block"
           animate={reduce ? undefined : { y: [0, 8, 0] }}
           transition={
             reduce
@@ -167,6 +152,21 @@ export default function Hero() {
           <ChevronDownIcon className="h-7 w-7" />
         </motion.a>
       </div>
+
+      {/* Mobile: full-bleed in fondo alla hero */}
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, delay: 0.55, ease }}
+        className="relative z-10 mt-10 w-full md:hidden"
+      >
+        <img
+          src="/images/hero-team.png"
+          alt=""
+          className="block h-auto w-full object-cover object-bottom"
+          aria-hidden
+        />
+      </motion.div>
     </section>
   )
 }
