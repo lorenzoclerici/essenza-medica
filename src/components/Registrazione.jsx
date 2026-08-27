@@ -57,7 +57,7 @@ export default function Registrazione() {
     await new Promise((r) => setTimeout(r, 900))
     const params = new URLSearchParams({
       nome: form.nome.trim(),
-      email: form.email.trim(),
+      telefono: form.telefono.trim(),
     })
     window.location.assign(`/grazie?${params.toString()}`)
   }
@@ -70,8 +70,8 @@ export default function Registrazione() {
             Registrati ora — è gratuito e bastano 30 secondi
           </h2>
           <p className="mt-4 text-base text-ink/70 md:text-lg">
-            Compila il form e ti invieremo la conferma con tutti i dettagli per
-            raggiungerci. I posti sono limitati.
+            Compila il form e ti invieremo su WhatsApp la conferma con tutti i
+            dettagli per raggiungerci. I posti sono limitati.
           </p>
         </FadeUp>
 
@@ -193,7 +193,7 @@ export default function Registrazione() {
                   Dati al sicuro, mai condivisi
                 </span>
                 <span>Nessun costo, nessun impegno</span>
-                <span>Solo conferma dell&apos;evento</span>
+                <span>Solo conferma WhatsApp dell&apos;evento</span>
               </p>
             </form>
           </FadeUp>
