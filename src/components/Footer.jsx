@@ -29,8 +29,8 @@ export default function Footer() {
         </div>
 
         <div className="text-sm text-white/50 md:text-right">
-          <p>P.IVA — da completare</p>
-          <p className="mt-1">Dir. Sanitario Dott. M. Angelico</p>
+          <p>P.IVA 04294550407</p>
+          <p className="mt-1">Dir. Sanitario: Dott.ssa Passaniti M. Angelica</p>
           <p className="mt-3">
             <a href="#privacy" className="underline underline-offset-2 hover:text-brand">
               Privacy Policy
