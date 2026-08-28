@@ -7,6 +7,7 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline'
 import Footer from '../components/Footer'
+import { trackMetaLead } from '../lib/metaPixel'
 
 const ease = [0.22, 1, 0.36, 1]
 
@@ -17,6 +18,7 @@ export default function ThankYou() {
 
   useEffect(() => {
     document.title = 'Grazie · Essenza Medica Open Day'
+    trackMetaLead()
   }, [])
 
   return (
