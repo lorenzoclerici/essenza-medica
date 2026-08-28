@@ -12,7 +12,8 @@ import { FadeUp, staggerContainer, staggerItem } from './Motion'
 
 const specialties = [
   'Cardiologia',
-  'Ginecologia e Ostetricia',
+  'Ginecologia',
+  'Senologia',
   'Dermatologia',
   'Ortopedia',
   'Allergologia',
@@ -21,10 +22,10 @@ const specialties = [
   'Medicina Estetica',
   'Fisiatria',
   'Dietistica e Nutrizione',
-  'Pediatria',
   'Neurologia',
   'Osteopatia',
   'Ecografia',
+  'Terapia Pavimento Pelvico',
 ]
 
 const iconCycle = [
@@ -81,7 +82,7 @@ export default function Specialita() {
       <div className="mx-auto max-w-6xl px-6">
         <FadeUp className="max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-brand">
-            <CountUp /> specialità
+            <CountUp to={specialties.length} /> specialità
           </p>
           <h2 className="mt-3 text-3xl font-extrabold uppercase tracking-tight text-ink md:text-4xl">
             Tutte le specialità, sotto lo stesso tetto
