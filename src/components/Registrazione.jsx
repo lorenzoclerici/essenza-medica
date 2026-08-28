@@ -262,8 +262,8 @@ export default function Registrazione() {
               </div>
               <div className="mt-8 overflow-hidden rounded-xl">
                 <img
-                  src="/images/studio.png"
-                  alt="Studio Essenza Medica"
+                  src="/images/ingresso.png"
+                  alt="Ingresso Essenza Medica"
                   className="aspect-[16/10] w-full object-cover opacity-90"
                   loading="lazy"
                 />
