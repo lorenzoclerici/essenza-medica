@@ -14,7 +14,6 @@ export default function ThankYou() {
   const reduce = useReducedMotion()
   const params = new URLSearchParams(window.location.search)
   const nome = params.get('nome')?.trim() || ''
-  const telefono = params.get('telefono')?.trim() || ''
 
   useEffect(() => {
     document.title = 'Grazie · Essenza Medica Open Day'
@@ -73,26 +72,6 @@ export default function ThankYou() {
               Sei in lista per l&apos;Open Day.
             </span>
           </motion.h1>
-
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.24, ease }}
-            className="mt-5 text-base leading-relaxed text-white/70 md:text-lg"
-          >
-            {telefono ? (
-              <>
-                Ti invieremo la conferma su WhatsApp al numero{' '}
-                <strong className="font-semibold text-white">{telefono}</strong>{' '}
-                con tutti i dettagli per raggiungerci.
-              </>
-            ) : (
-              <>
-                Ti invieremo a breve la conferma su WhatsApp con tutti i
-                dettagli per raggiungerci.
-              </>
-            )}
-          </motion.p>
 
           <motion.ul
             initial={reduce ? false : { opacity: 0, y: 20 }}

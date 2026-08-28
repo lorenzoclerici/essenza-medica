@@ -65,7 +65,6 @@ export default function Registrazione() {
       })
       const params = new URLSearchParams({
         nome: form.nome.trim(),
-        telefono: form.telefono.trim(),
       })
       window.location.assign(`/grazie?${params.toString()}`)
     } catch (err) {
